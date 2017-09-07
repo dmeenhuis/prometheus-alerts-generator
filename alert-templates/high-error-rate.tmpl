@@ -1,0 +1,14 @@
+  ALERT {{title}}HighErrorRate
+    IF (sum(sum_over_time(service_http_requests{job="{{service}}",status=~"^[45].*"}[10m]))
+          /
+        sum(sum_over_time(service_http_requests{job="{{service}}"}[10m])) * 100 > 10
+          and
+        sum(sum_over_time(service_http_requests{job="{{service}}",status=~"^[45].*"}[10m])) > 10)
+    FOR 5m
+    LABELS {
+      team="{{team}}"
+    }
+    ANNOTATIONS {
+      summary = "In the last 10 minutes there were 10 percent or more status codes 4/5** returned on node \{{ $labels.instance }}",
+      description = "In the last 10 minutes there were 10 percent or more status codes 4/5** returned on node \{{ $labels.instance }}",
+    }

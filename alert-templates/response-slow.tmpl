@@ -1,0 +1,10 @@
+  ALERT {{title}}ResponseSlow
+    IF avg(service_http_requests_elapsed_time_nanoseconds{quantile="0.99",job="{{service}}"}) BY (trace_name) / 1000000 > {{threshold}}
+    FOR 15m
+    LABELS {
+      team="{{team}}"
+    }
+    ANNOTATIONS {
+      summary = "Response of {{service}} is slow",
+      description = "The response time of {{service}} is higher than {{threshold}} ms for the last 15 minutes",
+    }

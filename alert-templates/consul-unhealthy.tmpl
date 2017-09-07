@@ -1,0 +1,10 @@
+  ALERT {{title}}Unhealthy
+    IF sum(consul_catalog_service_node_healthy{service_name="{{service}}"}) < {{threshold}}
+    FOR 1m
+    LABELS {
+      team="{{team}}"
+    }
+    ANNOTATIONS {
+      summary = "The {{service}} service or site is unhealthy",
+      description = "The {{service}} service or site is unhealthy",
+    }
